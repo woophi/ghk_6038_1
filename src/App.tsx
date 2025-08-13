@@ -3,14 +3,35 @@ import { Collapse } from '@alfalab/core-components/collapse';
 import { Gap } from '@alfalab/core-components/gap';
 import { PureCell } from '@alfalab/core-components/pure-cell';
 import { Typography } from '@alfalab/core-components/typography';
+import { BulbMIcon } from '@alfalab/icons-glyph/BulbMIcon';
 import { ChevronDownMIcon } from '@alfalab/icons-glyph/ChevronDownMIcon';
 import { ChevronUpMIcon } from '@alfalab/icons-glyph/ChevronUpMIcon';
+import { CrownMIcon } from '@alfalab/icons-glyph/CrownMIcon';
+import { LightningMIcon } from '@alfalab/icons-glyph/LightningMIcon';
 import { useEffect, useState } from 'react';
 import hb from './assets/hb.png';
 import heart from './assets/heart.png';
 import house from './assets/house.png';
 import { LS, LSKeys } from './ls';
 import { appSt } from './style.css';
+
+const items = [
+  {
+    title: 'Будьте первыми',
+    text: 'Ранний доступ к новым функциям приложения Альфа Ивестиции',
+    IconComp: LightningMIcon,
+  },
+  {
+    title: 'Приоритетная поддержка',
+    text: 'Любой вопрос в чате Альфа-Инвестиций решится быстрее',
+    IconComp: CrownMIcon,
+  },
+  {
+    title: 'Уведомления по портфелю',
+    text: 'Получайте мгновенно информацию по аномалиям с вашим портфелем',
+    IconComp: BulbMIcon,
+  },
+];
 
 const faqs = [
   {
@@ -19,19 +40,8 @@ const faqs = [
       'Подписка активируется автоматически сразу после оформления. Преимущества, включая сделки без комиссии и доступ к аналитике, становятся доступны в течение 1 рабочего дня',
   },
   {
-    question: 'Что значит «3 сделки без комиссии»? Есть ли ограничения по сумме или инструментам?',
-    answer:
-      'Вы получаете 3 сделки без брокерской комиссии на любые биржевые инструменты (акции, облигации, фонды) в рамках брокерского счета. Ограничений по сумме сделки нет. Сделки должны быть совершены в течение 30 дней после пополнения счета на сумму от 10 000 ₽',
-  },
-  {
-    question: 'Что произойдет, если я выведу деньги до истечения 30 дней?',
-    answer:
-      'Чтобы получить право на 3 сделки без комиссии, необходимо удерживать сумму от 10 000 ₽ на брокерском счете не менее 30 календарных дней. При досрочном выводе бонус аннулируется',
-  },
-  {
-    question: 'Как часто я буду получать аналитические обзоры и в каком формате?',
-    answer:
-      'Обзоры публикуются один раз в месяц и доступны в формате PDF и онлайн-статьи в вашем личном кабинете. Мы также отправим уведомление на электронную почту',
+    question: 'Покупка каких акций и облигаций доступна без комиссии',
+    answer: 'Лимит распространяется на покупку акций и облигаций. Покупка других классов активов не учитывается',
   },
   {
     question: 'Как происходит розыгрыш денежных призов?',
@@ -40,7 +50,7 @@ const faqs = [
   },
 ];
 
-const LINK = 'alfabank://longread?endpoint=v1/adviser/longreads/60715';
+const LINK = 'alfabank://longread?endpoint=v1/adviser/longreads/60683';
 
 if (LS.getItem(LSKeys.ShowThx, false)) {
   window.location.replace(LINK);
@@ -57,7 +67,7 @@ export const App = () => {
   }, []);
 
   const submit = () => {
-    window.gtag('event', '5192_add_var1');
+    window.gtag('event', '6038_add_var1');
     setLoading(true);
 
     LS.setItem(LSKeys.ShowThx, true);
@@ -96,11 +106,11 @@ export const App = () => {
           <PureCell.Content>
             <PureCell.Main>
               <Typography.TitleResponsive color="primary-inverted" tag="h3" view="xsmall" font="system" weight="semibold">
-                Торговля без комиссии
+                Покупка акций и облигаций без комиссии
               </Typography.TitleResponsive>
 
               <Typography.Text view="primary-small" color="secondary-inverted">
-                Все паи биржевых фондов Альфа-Капитал
+                на сумму до 100 000 ₽
               </Typography.Text>
             </PureCell.Main>
           </PureCell.Content>
@@ -146,6 +156,36 @@ export const App = () => {
           font="system"
           weight="semibold"
         >
+          Больше преимуществ
+        </Typography.TitleResponsive>
+
+        {items.map(item => (
+          <PureCell className={appSt.cell} key={item.title}>
+            <PureCell.Graphics>
+              <item.IconComp color="#FFFFFF" />
+            </PureCell.Graphics>
+            <PureCell.Content>
+              <PureCell.Main>
+                <Typography.Text color="primary-inverted" view="primary-small" weight="bold">
+                  {item.title}
+                </Typography.Text>
+
+                <Typography.Text view="primary-small" color="secondary-inverted">
+                  {item.text}
+                </Typography.Text>
+              </PureCell.Main>
+            </PureCell.Content>
+          </PureCell>
+        ))}
+
+        <Typography.TitleResponsive
+          color="primary-inverted"
+          style={{ marginTop: '1rem' }}
+          tag="h2"
+          view="small"
+          font="system"
+          weight="semibold"
+        >
           Частые вопросы
         </Typography.TitleResponsive>
 
@@ -153,7 +193,7 @@ export const App = () => {
           <div style={{ marginTop: '1rem' }} key={index}>
             <div
               onClick={() => {
-                window.gtag('event', `5192_FAQ${index + 1}_var1`);
+                window.gtag('event', `6038_FAQ${index + 1}_var1`);
 
                 setCollapsedItem(items =>
                   items.includes(String(index + 1))
